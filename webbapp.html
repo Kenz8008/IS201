@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bender Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #e0f7fa, #fff);
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(to right, #4dd0e1, #00796b);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .question {
+      margin: 30px 0;
+      background-color: #f1f1f1;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      display: block;
+      margin: 10px 0;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+    }
+
+    .Fire { background-color: #ef5350; color: white; }
+    .Water { background-color: #42a5f5; color: white; }
+    .Earth { background-color: #8d6e63; color: white; }
+    .Air { background-color: #b2ebf2; color: #004d40; }
+
+    .result {
+      text-align: center;
+      font-size: 1.8em;
+      margin-top: 30px;
+    }
+
+    .result img {
+      margin-top: 20px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<h1>Which Bender Are You?</h1>
+
+<div id="quiz"></div>
+<div class="result" id="result"></div>
+
+<script>
+  const questions = [
+    {
+      text: "Category 1 - Food: Pick one",
+      options: [
+        { text: "A. Spicy", type: "Fire" },
+        { text: "B. Smoothie", type: "Water" },
+        { text: "C. Meat", type: "Earth" },
+        { text: "D. Salad", type: "Air" }
+      ]
+    },
+    {
+      text: "Category 2 - Vacation Spot:",
+      options: [
+        { text: "A. Volcano hike", type: "Fire" },
+        { text: "B. Beach", type: "Water" },
+        { text: "C. Mountain cabin", type: "Earth" },
+        { text: "D. Skydiving", type: "Air" }
+      ]
+    },
+    {
+      text: "Category 3 - Personality Trait:",
+      options: [
+        { text: "A. Passionate", type: "Fire" },
+        { text: "B. Calm", type: "Water" },
+        { text: "C. Loyal", type: "Earth" },
+        { text: "D. Free-Spirited", type: "Air" }
+      ]
+    },
+    {
+      text: "Category 4 - Hobby:",
+      options: [
+        { text: "A. Dancing", type: "Fire" },
+        { text: "B. Swimming", type: "Water" },
+        { text: "C. Hiking", type: "Earth" },
+        { text: "D. Meditation", type: "Air" }
+      ]
+    },
+    {
+      text: "Category 5 - Favorite Weather:",
+      options: [
+        { text: "A. Hot and sunny", type: "Fire" },
+        { text: "B. Rainy", type: "Water" },
+        { text: "C. Cool and dry", type: "Earth" },
+        { text: "D. Windy", type: "Air" }
+      ]
+    }
+  ];
+
+  const benderImages = {
+    Fire: "assets/img/images.jpg",
+    Water: "assets/img/download-1.jpg",
+    Earth: "assets/img/download-2.jpg",
+    Air: "assets/img/download.jpg",
+  };
+
+  let currentQuestion = 0;
+  const scores = { Fire: 0, Water: 0, Earth: 0, Air: 0 };
+
+  function showQuestion() {
+    const quiz = document.getElementById("quiz");
+    quiz.innerHTML = "";
+    if (currentQuestion < questions.length) {
+      const q = questions[currentQuestion];
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>${q.text}</h3>`;
+      q.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option.text;
+        btn.className = option.type;
+        btn.onclick = () => {
+          scores[option.type]++;
+          currentQuestion++;
+          showQuestion();
+        };
+        div.appendChild(btn);
+      });
+      quiz.appendChild(div);
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    const resultDiv = document.getElementById("result");
+    let maxType = null;
+    let maxScore = -1;
+    for (const type in scores) {
+      if (scores[type] > maxScore) {
+        maxScore = scores[type];
+        maxType = type;
+      }
+    }
+    resultDiv.innerHTML = `
+      You are a <strong>${maxType} Bender</strong>! 🌟<br>
+      <img src="${benderImages[maxType]}" alt="${maxType} Bender">
+    `;
+  }
+
+  showQuestion();
+</script>
+
+</body>
+</html>
